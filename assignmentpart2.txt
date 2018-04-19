@@ -1,0 +1,63 @@
+//Question 1 part 2
+
+#include<stdio.h>
+#include<conio.h>
+#include<unistd.h>
+	int main()
+	{
+		int p[20],btime[20], su[20], wtime[20],tatime[20],i, k, n, temp;
+		double wtavg, tatavg;
+		printf("Enter the number of process  in the queue ");
+		scanf("%d",&n);
+		for(i=0;i<n;i++)
+		{
+			p[i] = i;
+			printf("Enter the burst time for process  %d  ", i);
+			scanf("%d",&btime[i]);
+			printf("teacher or student process (1/0) ? ");
+			scanf("%d", &su[i]);
+		}
+		
+		for(i=0;i<n;i++)
+		{
+			for(k=i+1;k<n;k++)
+			{
+				if(su[i] > su[k])
+				{
+					temp=p[i];
+					p[i]=p[k];
+					p[k]=temp;
+					
+					temp=btime[i];
+					btime[i]=btime[k];
+					btime[k]=temp;
+					
+					temp=su[i];
+					su[i]=su[k];
+					su[k]=temp;
+				}
+			}
+		}
+		wtavg = wtime[0] = 0;
+		tatavg = tatime[0] = btime[0];
+		for(i=1;i<n;i++)
+		{
+			wtime[i] = wtime[i-1] + btime[i-1];
+			tatime[i] = tatime[i-1] + btime[i];
+			wtavg = wtavg + wtime[i];
+			tatavg = tatavg + tatime[i];
+		}
+		printf("process\t\t teacher or student process  \tburst time\twaiting time\tturnaround time");
+		
+		for(i=0;i<n;i++)
+		{
+			printf("\n%d \t\t %d \t\t %d \t\t %d \t\t\t %d ",p[i],su[i],btime[i],wtime[i],tatime[i]);
+		}
+	
+
+		printf("\naverage waiting time is  %d",wtavg/n);
+		printf("\naverage turnaround time is %d",tatavg/n);
+	
+
+		return 0;
+	}
